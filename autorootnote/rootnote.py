@@ -128,13 +128,11 @@ def remove_sampler_chunk(buf, wave_info):
     sampler_size = wave_info['sampler_size']
     if sampler_position is not None:
         data = buf.read()
-        print len(data)
         data = data[:sampler_position] + data[sampler_position+sampler_size:]
         buf.truncate(0)
         buf.seek(0)
         buf.write(data)
         wave_info['datasize'] -= sampler_size
-        print sampler_position, sampler_size, len(data),wave_info['datasize']        
         write_data_size(buf, wave_info)
 
 def write_root_note(buf, note, wave_info):
@@ -164,7 +162,6 @@ def get_wave_info(f):
 def modify_wav(fn, note):
     f = open(fn, 'rb')
     wave_info = get_wave_info()
-    print 'Previous note %s' % wave_info['root_note']
     f.seek(0)
     new_data = insert_root_note(f, wave_info, note)
     with open(fn, 'wb') as f:
