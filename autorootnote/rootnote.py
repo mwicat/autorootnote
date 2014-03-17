@@ -84,7 +84,7 @@ def get_core_wave_info(buf):
         
         chunk.skip()
 
-    word_aligned = (chunk.chunksize & 1) == 0
+    word_aligned = is_word_aligned(buf, chunk)
     return {'word_aligned': word_aligned,
             'sampler_position': sampler_position,
             'sampler_size': sampler_size,
@@ -94,6 +94,16 @@ def get_core_wave_info(buf):
             'root_note': root_note,
             'root_note_position': root_note_position}
 
+
+def is_word_aligned(buf, chunk):
+    if (chunk.chunksize & 1) == 0:
+        return True
+    
+    pos = buf.tell()
+    buf.seek(-1, 2)
+    last_byte = buf.read(1)
+    buf.seek(pos)
+    return last_byte == '\x00'
 
 def write_data_size(buf, wave_info):
     sz = wave_info['datasize']
