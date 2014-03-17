@@ -66,7 +66,6 @@ def process_item(item, should_backup, preferences, parameters):
                               backup=should_backup)
     item.data['current_midi'] = item.data['guessed_midi']
     item.data['current_root'] = item.data['guessed_root']
-    print item.data
 
 
 def on_remove_loop_info(items):
@@ -91,7 +90,8 @@ def main():
                                  process_item,
                                  columns=COLUMNS,
                                  actions=actions,
-                                 is_valid_file=waveutil.is_valid_wave)
+                                 is_valid_file=waveutil.is_valid_wave,
+                                 capture_streams=True)
     sys.exit(app.exec_())    
 
 if __name__ == '__main__':
